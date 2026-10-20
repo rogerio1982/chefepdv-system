@@ -1,7 +1,10 @@
 $(function () {
 
     let hoje = new Date().toISOString().substring(0, 10);
-    $('#filtro-data-ini').val(hoje);
+    // Carregar TODOS os dados por padrão (sem limite de data inicial)
+    // Isso mostra todas as vendas do banco, incluindo dados de teste
+
+    $('#filtro-data-ini').val('2000-01-01');  // Data bem antiga para capturar tudo
     $('#filtro-data-fim').val(hoje);
 
     carregarVendas();
@@ -17,6 +20,8 @@ $(function () {
             status:          $('#filtro-status').val()
         };
 
+        console.log('Carregando vendas com params:', p);
+
         $('#tbody-vendas').html(
             '<tr><td colspan="8" class="text-center text-muted py-4">'
           + '<div class="spinner-border spinner-border-sm text-primary me-2"></div>'
@@ -24,6 +29,7 @@ $(function () {
         );
 
         $.getJSON(AJAX_URL + 'sale.php', p, function (res) {
+            console.log('Resposta da API:', res);
             if (!res.success) {
                 $('#tbody-vendas').html(
                     '<tr><td colspan="8" class="text-center text-danger py-3">'
